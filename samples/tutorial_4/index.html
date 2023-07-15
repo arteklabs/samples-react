@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>samples-react</title>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- jsx: at type="text/babel" to script -->
+    <script src='https://unpkg.com/babel-standalone@6/babel.min.js'></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body style="background-color: #393E41; color: #F6F7EB;">
+    <div class='fa' id="app"></div>
+    <script type="text/babel">
+
+        class App extends React.Component {
+            constructor(props) {
+                super(props)
+
+                this.state = {
+                    values: this.props.values,
+                    input: ''
+                }
+
+                // 2 - this guarantees that the this keyword always refers to App when
+                // handleRemoveNumber is called
+                this.handleRemoveNumber = this.handleRemoveNumber.bind(this);
+                this.handleAddNumber = this.handleAddNumber.bind(this);
+                this.updateInput = this.updateInput.bind(this);
+            }
+
+            handleAddNumber() {
+                console.log("add number: " + this.state.input)
+                this.setState((currentState) => {
+                    // merges into the state
+                    return {
+                        values: currentState.values.concat([this.state.input]),
+                        input: ''
+                    }
+                })
+            }
+
+            updateInput(e) {
+                console.log("update input: " + e.target.value)
+                const value = e.target.value
+                this.setState({
+                    input: value
+                })
+            }
+
+            handleRemoveNumber(number) {
+                console.log("remove number: " + number)
+                // tell react there was a state change so that the UI is rerenedered
+                this.setState((currentState) => {
+                    // merges into the state
+                    return {
+                        values: currentState.values.filter((value) => value !== number)
+                    }
+                })
+            }
+
+            render() {
+                return (
+                    <div id='container'>
+                        <NumbersList
+                            numbers={this.state.values}
+                            onRemoveNumber={this.handleRemoveNumber}
+                        />
+                        <input
+                            type="text"
+                            placeholder="value"
+                            value={this.state.input}
+                            onChange={this.updateInput}
+                        />
+                        <button onClick={this.handleAddNumber}>add</button>
+                    </div>
+                )
+            }
+        }
+
+
+        function NumbersList(props) {
+            // 1 - notice onRemoveNumber is called on props, so in onRemoveNumber, this is undefined
+            return (
+                <ul>
+                    {props.numbers.map((number) =>
+                        <li key={number.toString()}>
+                            <span>{number}</span>
+                            <button onClick={() => props.onRemoveNumber(number)}>delete</button>
+                        </li>
+                    )}
+                </ul>
+            )
+        }
+
+
+        ReactDOM.render(
+            <App values={[1, 2, 3, 4, 5, 6]} />,
+            document.getElementById('app')
+        )
+    </script>
+
+
+</body>
+
+</html>

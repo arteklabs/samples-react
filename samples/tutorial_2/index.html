@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>samples-react</title>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- jsx: at type="text/babel" to script -->
+    <script src='https://unpkg.com/babel-standalone@6/babel.min.js'></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body style="background-color: #393E41; color: #F6F7EB;">
+    <div class='fa' id="app"></div>
+    <script type="text/babel">
+        const NO_ELEMENT_ID = null
+        const THIS = "this"
+        const IS = 'is'
+        const ART = 'art'
+
+        function ThisComponent(props) {
+            return React.createElement('h3', NO_ELEMENT_ID, props.text)
+        }
+
+        function IsComponent(props) {
+            return <h2>{ props.text }</h2>
+        }
+
+        function ArtComponent(props) {
+            return <h1>{ props.text }</h1>
+        }
+
+        function App(props) {
+            return (
+                <div id='container'>
+                    <ThisComponent text={props.this} />
+                    <IsComponent text={props.is} />
+                    <ArtComponent text={props.art} />
+                </div>
+            )
+        }
+
+        ReactDOM.render(<App this={THIS} is={IS} art={ART} />, document.getElementById('app'))
+    </script>
+
+    
+</body>
+</html>
